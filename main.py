@@ -13,6 +13,8 @@ import sqlite3
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from addEditCoffeeForm import Ui_Dialog
+
 
 class Ui_MainWindow(QMainWindow, object):
     def __init__(self):
@@ -31,7 +33,7 @@ class Ui_MainWindow(QMainWindow, object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 10, 681, 301))
+        self.tableWidget.setGeometry(QtCore.QRect(0, 40, 681, 270))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(0)
@@ -49,10 +51,23 @@ class Ui_MainWindow(QMainWindow, object):
         self.tableWidget.setHorizontalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(6, item)
+
+        self.pushButton1 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton1.setGeometry(QtCore.QRect(10, 10, 151, 27))
+        self.pushButton1.setObjectName("pushButton1")
+
+        self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton2.setGeometry(QtCore.QRect(200, 10, 151, 27))
+        self.pushButton2.setObjectName("pushButton2")
+
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        self.pushButton1.clicked.connect(self.NewData)
+        self.pushButton2.clicked.connect(self.ModifyData)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -71,6 +86,24 @@ class Ui_MainWindow(QMainWindow, object):
         item.setText(_translate("MainWindow", "Объём упаковки"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("MainWindow", "Описание"))
+
+        self.pushButton1.setText(_translate("MainWindow", "Добавить"))
+        self.pushButton2.setText(_translate("MainWindow", "Редактировать"))
+
+    def NewData(self):
+        id = 0
+
+        self.f = Ui_Dialog(self)
+        self.f.setupUi(self, self.__db_name, id)
+        self.f.showNormal()
+
+    def ModifyData(self):
+        row1 = self.tableWidget.currentRow()
+        id = int(self.tableWidget.item(row1, 0).text())
+
+        self.f = Ui_Dialog(self)
+        self.f.setupUi(self, self.__db_name, id)
+        self.f.showNormal()
 
     def ReadData(self):
         # Подключение к БД
