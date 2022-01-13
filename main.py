@@ -23,7 +23,7 @@ class Ui_MainWindow(QMainWindow, object):
         # остальное без изменений
         self.setupUi(self)
 
-        self.__db_name = 'coffee.sqlite'
+        self.__db_name = './data/coffee.sqlite'
 
         self.ReadData()
 
